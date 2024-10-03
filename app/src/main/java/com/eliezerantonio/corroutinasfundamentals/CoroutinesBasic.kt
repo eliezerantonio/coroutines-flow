@@ -2,14 +2,59 @@ package com.eliezerantonio.corroutinasfundamentals
 
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 fun main() {
     //  globalScope()
-    suspendFun()
+//    suspendFun()
+    newTopic("Constructors of coroutines ")
+//    cRunBlocking()
+ //   cLaunch()
 
+    cAsync()
     readln()
+}
+
+fun cAsync() {
+    runBlocking {
+        newTopic("Async")
+
+     val result =   async {
+            startMsg()
+            delay(someTime())
+            println("async...")
+            endMsg()
+2
+        }
+        println("Async result=${result.await()}")
+    }
+}
+
+fun cLaunch() {
+ runBlocking {
+     newTopic("Launch")
+     launch {
+         startMsg()
+         delay(someTime())
+         println("launch...")
+         endMsg()
+     }
+ }
+}
+
+fun cRunBlocking() {
+
+    newTopic("Run Blocking")
+
+    runBlocking {
+        startMsg()
+        delay(someTime())
+        println("runBlocking...")
+        endMsg()
+    }
 }
 
 @OptIn(DelicateCoroutinesApi::class)
