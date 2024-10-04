@@ -9,40 +9,61 @@ import kotlinx.coroutines.runBlocking
 
 fun main() {
     //  globalScope()
-//    suspendFun()
-    newTopic("Constructors of coroutines ")
-//    cRunBlocking()
- //   cLaunch()
+    //  suspendFun()
+    //  newTopic("Constructors of coroutines ")
+    //  cRunBlocking()
+    //  cLaunch()
+    //  cAsync()
 
-    cAsync()
+    job()
     readln()
+}
+
+fun job() {
+    runBlocking {
+        newTopic("Job")
+        val job = launch {
+            startMsg()
+            delay(someTime())
+            print("job...")
+            endMsg()
+        }
+        println("Job: $job")
+
+       // job.cancel()
+
+     //   delay(4_000)
+        println("isActive: ${job.isActive}")
+        println("isCancelled: ${job.isCancelled}")
+        println("isCompleted: ${job.isCompleted}")
+    }
 }
 
 fun cAsync() {
     runBlocking {
         newTopic("Async")
 
-     val result =   async {
+        val result = async {
             startMsg()
             delay(someTime())
             println("async...")
             endMsg()
-2
+            2
         }
         println("Async result=${result.await()}")
     }
 }
 
 fun cLaunch() {
- runBlocking {
-     newTopic("Launch")
-     launch {
-         startMsg()
-         delay(someTime())
-         println("launch...")
-         endMsg()
-     }
- }
+    runBlocking {
+        newTopic("Launch")
+        launch {
+            startMsg()
+            delay(someTime())
+            println("launch...")
+            endMsg()
+        }
+    }
 }
 
 fun cRunBlocking() {
