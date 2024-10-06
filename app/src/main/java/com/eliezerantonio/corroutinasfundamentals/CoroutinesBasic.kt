@@ -15,8 +15,33 @@ fun main() {
     //  cLaunch()
     //  cAsync()
 
-    job()
+    //job()//
+
+    deferred()
     readln()
+}
+
+fun deferred() {
+
+    runBlocking {
+        newTopic("Deferred")
+        val deferred = async {
+            startMsg()
+            delay(someTime())
+            println("Deferred")
+            endMsg()
+            multi(5, 2)
+        }
+
+        println("Deferred: $deferred")
+        println("Value of deferred.await: ${deferred.await()}")
+
+        val result = async {
+            multi(3, 3)
+        }.await()
+
+        print("Result $result")
+    }
 }
 
 fun job() {
@@ -30,9 +55,9 @@ fun job() {
         }
         println("Job: $job")
 
-       // job.cancel()
+        // job.cancel()
 
-     //   delay(4_000)
+        //   delay(4_000)
         println("isActive: ${job.isActive}")
         println("isCancelled: ${job.isCancelled}")
         println("isCompleted: ${job.isCompleted}")
