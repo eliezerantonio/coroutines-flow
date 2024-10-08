@@ -1,46 +1,59 @@
 package com.eliezerantonio.corroutinasfundamentals
 
-import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-fun main() {
-    //  globalScope()
-    //  suspendFun()
-    //  newTopic("Constructors of coroutines ")
-    //  cRunBlocking()
-    //  cLaunch()
-    //  cAsync()
+fun main(){
+    //globalScope()
+    //suspendFun()
+    //newTopic("Constructores de corrutinas")
+    //cRunBlocking()
+    //cLaunch()
+    //cAsync()
+    //job()
+    //deferred()
+    cProduce()
 
-    //job()//
+    readLine()
+}
 
-    deferred()
-    readln()
+fun cProduce() = runBlocking{
+    newTopic("Produce")
+    val names = produceNames()
+    names.consumeEach { println(it) }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun CoroutineScope.produceNames(): ReceiveChannel<String> = produce {
+    (1..5).forEach { send("name$it") }
 }
 
 fun deferred() {
-
     runBlocking {
         newTopic("Deferred")
         val deferred = async {
             startMsg()
             delay(someTime())
-            println("Deferred")
+            println("deferred...")
             endMsg()
             multi(5, 2)
+            "Hola"
         }
-
         println("Deferred: $deferred")
-        println("Value of deferred.await: ${deferred.await()}")
+        println("Valor do Deferred.await: ${deferred.await()}")
 
         val result = async {
             multi(3, 3)
         }.await()
-
-        print("Result $result")
+        println("Result: $result")
     }
 }
 
@@ -49,15 +62,21 @@ fun job() {
         newTopic("Job")
         val job = launch {
             startMsg()
-            delay(someTime())
-            print("job...")
+            delay(2_100)
+            println("job...")
             endMsg()
         }
         println("Job: $job")
 
-        // job.cancel()
+        //delay(4_000)
+        println("isActive: ${job.isActive}")
+        println("isCancelled: ${job.isCancelled}")
+        println("isCompleted: ${job.isCompleted}")
 
-        //   delay(4_000)
+        delay(someTime())
+        println("Tarefa cancelada o interrumpida")
+        job.cancel()
+
         println("isActive: ${job.isActive}")
         println("isCancelled: ${job.isCancelled}")
         println("isCompleted: ${job.isCompleted}")
@@ -67,15 +86,14 @@ fun job() {
 fun cAsync() {
     runBlocking {
         newTopic("Async")
-
         val result = async {
             startMsg()
             delay(someTime())
             println("async...")
             endMsg()
-            2
+            1
         }
-        println("Async result=${result.await()}")
+        println("Result: ${result.await()}")
     }
 }
 
@@ -92,9 +110,7 @@ fun cLaunch() {
 }
 
 fun cRunBlocking() {
-
-    newTopic("Run Blocking")
-
+    newTopic("RunBlocking")
     runBlocking {
         startMsg()
         delay(someTime())
@@ -103,30 +119,26 @@ fun cRunBlocking() {
     }
 }
 
-@OptIn(DelicateCoroutinesApi::class)
 fun suspendFun() {
-    newTopic("Suspended Function")
+    newTopic("Suspend")
     Thread.sleep(someTime())
-    GlobalScope.launch {
-        delay(someTime())
-    }
+    //delay(someTime())
+    GlobalScope.launch { delay(someTime()) }
 }
 
 fun globalScope() {
-
     newTopic("Global Scope")
     GlobalScope.launch {
         startMsg()
         delay(someTime())
-        println("My Coroutine")
+        println("My corrutina")
         endMsg()
     }
 }
 
 fun startMsg() {
-    println("Start Coroutine -${Thread.currentThread().name}")
+    println("Start corrutina -${Thread.currentThread().name}-")
 }
-
 fun endMsg() {
-    println("Coroutine -${Thread.currentThread().name} Finalizada")
+    println("Corrutina -${Thread.currentThread().name}- Finished")
 }
