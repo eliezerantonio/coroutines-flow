@@ -7,8 +7,8 @@ import kotlin.concurrent.thread
 import kotlin.random.Random
 
 fun main() {
-//    lambda()
-//    threads()
+     //    lambda()
+    //    threads()
     coroutinesVsThreads()
 
 }
